@@ -1,0 +1,10 @@
+# j4b0l's template library
+# example Dockerfile
+
+# Base image for Dockerfile
+FROM ubuntu:trusty
+
+
+# maintainer line should go to the end - images with same beginning but
+# different maintainer will make more use of cache this way
+MAINTAINER Maciej Jablonski <maciej.jablonski.1985@gmail.com>
