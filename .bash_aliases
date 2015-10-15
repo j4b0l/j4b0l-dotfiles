@@ -142,8 +142,10 @@ function mkdir-dated() {
     DATE=`date +%Y%m%d`
     if [ -n "$1" ]; then
         mkdir ${DATE}_$1
+        cd ${DATE}_$1
     else
         mkdir ${DATE}
+        cd ${DATE}
     fi
 }
 
@@ -155,6 +157,9 @@ function mknotes-dated() {
         vim ${DATE}.txt
     fi
 }
+
+export HISTSIZE=-1
+export HISTFILESIZE=-1
 
 # For some company-confidential mumbo-jumbo
 if [ -f ~/.bash_aliases_private ]; then
