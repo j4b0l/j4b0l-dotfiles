@@ -9,6 +9,7 @@ filetype plugin indent on
 set tabstop=4
 set shiftwidth=4
 set expandtab
+hi Normal ctermbg=none
 
 augroup Docker
     au BufNewFile Dockerfile exec "0r ~/.vim/skel/Docker" | %s/HELLO/\=expand("%:r")/ge
