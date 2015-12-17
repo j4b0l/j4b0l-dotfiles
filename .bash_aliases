@@ -86,6 +86,11 @@ function omg-done() {
 	git status |grep modified|awk '{print $2}'|xargs git add
 }
 
+# See list of people responsible for the code in repository
+function who-did-that() {
+    git ls-tree -r -z --name-only HEAD -- * | xargs -0 -n1 git blame --line-porcelain HEAD |grep  "^author "|sort|uniq -c|sort -nr
+}
+
 # DOGE GIT - just for fun ;)
 # usage - just have fun like
 # much commit
