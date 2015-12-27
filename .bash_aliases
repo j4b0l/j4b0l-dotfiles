@@ -91,6 +91,15 @@ function who-did-that() {
     git ls-tree -r -z --name-only HEAD -- . | xargs -0 -n1 git blame --line-porcelain HEAD |grep  "^author "|sort|uniq -c|sort -nr
 }
 
+function who-worked-on-that() {
+    git ls-tree -r -z --name-only HEAD -- . | xargs -0 -n1 git blame --line-porcelain HEAD |grep  "^author "|sort|uniq -c|sort -nr|while read line; do
+        author=`echo $line | awk -F' author ' '{print $2}'`
+        count=`echo $line | awk -F' author ' '{print $1}'`
+        stats=`git log --author="$author" --pretty=tformat: --numstat | gawk '{ add += $1; subs += $2; loc += $1 - $2 } END { printf "%s = +%s -%s\n", loc, add, subs }' -`
+        echo -e "$author\t$stats\n"
+    done
+}
+
 # DOGE GIT - just for fun ;)
 # usage - just have fun like
 # much commit
