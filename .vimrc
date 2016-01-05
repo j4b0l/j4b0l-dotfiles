@@ -1,6 +1,6 @@
 set backup
-set backupdir=/home/mjablonski/.vim/backup
-set directory=/home/mjablonski/.vim/tmp
+set backupdir=/home/$USER/.vim/backup
+set directory=/home/$USER/.vim/tmp
 colors darkblue
 match ErrorMsg '\%>80v.\+'
 match ErrorMsg /\s\+\%#\@<!$/

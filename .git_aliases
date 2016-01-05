@@ -1,0 +1,4 @@
+[alias]
+    lg = log --graph --oneline --decorate
+    logtree = log --graph --oneline --decorate --all
+
