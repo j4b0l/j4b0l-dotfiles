@@ -2,3 +2,8 @@
     lg = log --graph --oneline --decorate
     logtree = log --graph --oneline --decorate --all
 
+[core]
+    editor = vim
+[color]
+    ui = true
+
