@@ -76,6 +76,13 @@ On_IWhite='\[\033[0;107m\]'   # White
 # Custom prompt
 PS1="${BBlue}\D{%Y%m%d_%H%M} ${BRed}\u${BGreen}@\h${BBlue} \w \$${Color_Off} "
 
+J4_REAL_ALIASES=`readlink -f ~/.bash_aliases`
+J4_DOTFILES_ROOT=`dirname $J4_REAL_ALIASES`
+J4_BINPATH="${J4_DOTFILES_ROOT}/bin"
+if [ -d $J4_BINPATH ]; then
+    export PATH="${J4_BINPATH}:${PATH}"
+fi
+
 # To overcome some common mistakes and terminal pitfalls
 alias sl="ls"
 alias mc='mc -s'
@@ -113,6 +120,7 @@ alias wow='git status'
 
 # repeat last command with sudo
 alias orly='sudo $(history -p \!\!)'
+alias doco='docker-compose'
 
 function j4-find() {
 	if [ -z "$1" ]; then
