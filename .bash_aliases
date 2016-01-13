@@ -180,7 +180,9 @@ function mknotes-dated() {
     fi
 }
 
-export HISTSIZE=-1
+# See function void sv_histsize in:
+# http://bashcookbook.com/bashinfo/source/bash-3.1/variables.c
+export HISTSIZE=""
 export HISTFILESIZE=-1
 
 # For some company-confidential mumbo-jumbo
