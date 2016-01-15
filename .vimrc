@@ -1,7 +1,7 @@
 set backup
 set backupdir=/home/$USER/.vim/backup
 set directory=/home/$USER/.vim/tmp
-colors darkblue
+colors delek
 match ErrorMsg '\%>80v.\+'
 match ErrorMsg /\s\+\%#\@<!$/
 filetype plugin indent on
