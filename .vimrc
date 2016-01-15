@@ -10,6 +10,8 @@ set tabstop=4
 set shiftwidth=4
 set expandtab
 hi Normal ctermbg=none
+set modeline
+set modelines=5
 
 augroup Docker
     au BufNewFile Dockerfile exec "0r ~/.vim/skel/Docker" | %s/HELLO/\=expand("%:r")/ge
@@ -26,3 +28,4 @@ augroup end
 augroup Java
     au BufNewFile *.java 0r ~/.vim/skel/skel.java | %s/CLASSNAME/\=expand("%:r")/ge
 augroup end
+

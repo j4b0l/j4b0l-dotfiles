@@ -258,3 +258,4 @@ if [ -f ~/.bash_aliases_private ]; then
     . ~/.bash_aliases_private
 fi
 
+# vim: set filetype=sh:
