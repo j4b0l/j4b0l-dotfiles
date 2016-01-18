@@ -1,0 +1,4 @@
+hardstatus alwayslastline
+hardstatus string '%{= bw}[ %u%{W}%H %{w}][%= %{bw}%?%-w%?%{=b bW}(%{W}%n %t%?(%u)%?%{=b bW})%{= bw}%?%+w%?%?%= %{W}]%{bW}[%{Y}%l%{W}]%{=b w}[ %m/%d %c ]%{W}'
+
+
