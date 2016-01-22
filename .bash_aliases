@@ -248,6 +248,10 @@ function mknotes-dated() {
     fi
 }
 
+function j4-realias() {
+    . ~/.bash_aliases
+}
+
 # See function void sv_histsize in:
 # http://bashcookbook.com/bashinfo/source/bash-3.1/variables.c
 export HISTSIZE=""

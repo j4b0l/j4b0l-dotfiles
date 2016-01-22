@@ -1,6 +1,8 @@
 [alias]
     lg = log --graph --oneline --decorate
     logtree = log --graph --oneline --decorate --all
+    co = checkout
+    cm = commit
 
 [core]
     editor = vim
