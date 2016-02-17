@@ -158,7 +158,7 @@ alias mc='mc -s'
 # Stage all of modified files in git
 # use when you think 'OMG, it's finally done and I can commit it'
 function omg-done() {
-	git status |grep modified|awk '{print $2}'|xargs git add
+	git diff --name-only|xargs git add
 }
 
 # See list of people responsible for the code in repository
@@ -256,6 +256,10 @@ function j4-realias() {
 # http://bashcookbook.com/bashinfo/source/bash-3.1/variables.c
 export HISTSIZE=""
 export HISTFILESIZE=-1
+
+function short-prompt() {
+    export PS1="$ "
+}
 
 # For some company-confidential mumbo-jumbo
 if [ -f ~/.bash_aliases_private ]; then

@@ -1,8 +1,10 @@
 [alias]
     lg = log --graph --oneline --decorate
     logtree = log --graph --oneline --decorate --all
+    wipe = clean -dfx
     co = checkout
     cm = commit
+    cam = commit --amend
 
 [core]
     editor = vim
