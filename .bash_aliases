@@ -158,7 +158,8 @@ alias mc='mc -s'
 # Stage all of modified files in git
 # use when you think 'OMG, it's finally done and I can commit it'
 function omg-done() {
-	git diff --name-only|xargs git add
+    local GIT_TOP=$(git rev-parse --show-toplevel|sed 's/\//\\\//g')
+	git diff --name-only|sed "s/^/${GIT_TOP}\//g"|xargs git add
 }
 
 # See list of people responsible for the code in repository
