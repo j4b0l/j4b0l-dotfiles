@@ -266,6 +266,25 @@ function short-prompt() {
     export PS1="$ "
 }
 
+function EOD-status() {
+    find $HOME -name .git -type d|sed s/\.git$//g|while read REPO_PATH; do
+        pushd $REPO_PATH >/dev/null 2>/dev/null
+            if git remote |grep origin >/dev/null; then
+                CURRENT_BRANCH=`git rev-parse --abbrev-ref HEAD`
+                if [ "$CURRENT_BRANCH" != "HEAD" ]; then
+                    git log --pretty=%H origin/${CURRENT_BRANCH}..${CURRENT_BRANCH}|while read $LOCAL_COMMIT; do
+                        if ! git ls-remote | grep $LOCAL_COMMIT; then
+                            echo "Commit only local in $REPO_PATH"
+                        fi
+                    done
+                else
+                    echo "$REPO_PATH is DECAPITATED"
+                fi
+            fi
+        popd >/dev/null 2>/dev/null
+    done
+}
+
 # For some company-confidential mumbo-jumbo
 if [ -f ~/.bash_aliases_private ]; then
     . ~/.bash_aliases_private
