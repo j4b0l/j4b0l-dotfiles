@@ -151,6 +151,10 @@ if [ -d $J4_BINPATH ]; then
     export PATH="${J4_BINPATH}:${PATH}"
 fi
 
+if [ -d ~/bin ]; then
+    export PATH="~/bin:${PATH}"
+fi
+
 # To overcome some common mistakes and terminal pitfalls
 alias sl="ls"
 alias mc='mc -s'
