@@ -1,0 +1,11 @@
+#!/usr/bin/env perl
+
+while (<>) {
+    chomp;
+    @hexes = split //;
+    while (scalar(@hexes)>1){
+        $byte = shift @hexes;
+        $byte .= shift @hexes;
+        print chr(hex($byte));
+    }
+}

@@ -269,11 +269,11 @@ function short-prompt() {
 function EOD-status() {
     find $HOME -name .git -type d|sed s/\.git$//g|while read REPO_PATH; do
         pushd $REPO_PATH >/dev/null 2>/dev/null
-            if git remote |grep origin >/dev/null; then
+            if git remote |grep origin >/dev/null 2>/dev/null; then
                 CURRENT_BRANCH=`git rev-parse --abbrev-ref HEAD`
                 if [ "$CURRENT_BRANCH" != "HEAD" ]; then
                     git log --pretty=%H origin/${CURRENT_BRANCH}..${CURRENT_BRANCH}|while read $LOCAL_COMMIT; do
-                        if ! git ls-remote | grep $LOCAL_COMMIT; then
+                        if ! git ls-remote | grep $LOCAL_COMMIT >/dev/null 2>/dev/null; then
                             echo "Commit only local in $REPO_PATH"
                         fi
                     done
