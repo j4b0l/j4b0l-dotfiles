@@ -1,6 +1,7 @@
 [alias]
     lg = log --graph --oneline --decorate
     logtree = log --graph --oneline --decorate --all
+    fulltree = log --graph --decorate --all
     wipe = clean -dfx
     co = checkout
     cm = commit
