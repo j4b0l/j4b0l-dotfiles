@@ -253,6 +253,19 @@ function mknotes-dated() {
     fi
 }
 
+function journal-dated() {
+    DATE=`date +%Y%m%d`
+    if [ -n "$1" ]; then
+        TARGET=${DATE}_$1.txt
+    else
+        TARGET=${DATE}.txt
+    fi
+    if [ -f "00000000.txt" -a ! -f $TARGET ]; then
+        cp 00000000.txt $TARGET
+    fi
+    vim $TARGET
+}
+
 function j4-realias() {
     . ~/.bash_aliases
 }

@@ -9,3 +9,5 @@
 echo "Hello from HELLO.sh script"
 
 exit 0
+
+# vim: set filetype=sh :

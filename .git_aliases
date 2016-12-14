@@ -1,5 +1,7 @@
 [alias]
-    lg = log --graph --oneline --decorate
+    lgod = log --graph --oneline --decorate
+    lgd = log --graph --decorate
+    lg = log --graph
     logtree = log --graph --oneline --decorate --all
     fulltree = log --graph --decorate --all
     wipe = clean -dfx
