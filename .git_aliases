@@ -1,4 +1,5 @@
 [alias]
+    master = reset --hard origin/master
     lgod = log --graph --oneline --decorate
     lgd = log --graph --decorate
     lg = log --graph
