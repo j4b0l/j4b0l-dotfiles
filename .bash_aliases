@@ -158,6 +158,8 @@ fi
 # To overcome some common mistakes and terminal pitfalls
 alias sl="ls"
 alias mc='mc -s'
+alias grpe='grep'
+alias lelss='less'
 
 # Stage all of modified files in git
 # use when you think 'OMG, it's finally done and I can commit it'

@@ -1,0 +1,12 @@
+#!/usr/bin/env perl
+
+while (<>) {
+    chomp;
+    @hexes = split //;
+    while (scalar(@hexes)>1){
+        $even = shift @hexes;
+        print uc ($even);
+        $odd = shift @hexes;
+        print lc ($odd);
+    }
+}

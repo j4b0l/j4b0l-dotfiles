@@ -10,6 +10,7 @@
     cm = commit
     cam = commit --amend
     whereis = "!f() { git ls-tree --full-tree -r HEAD |grep $(git ls-tree HEAD -- $1|awk '{print $3}'); }; f"
+    origin = "!f() { git fetch; git reset --hard origin/$(git rev-parse --abbrev-ref HEAD); }; f"
     prp = "!f() { git pull --rebase; git push; }; f"
 
 [core]
