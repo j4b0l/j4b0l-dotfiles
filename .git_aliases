@@ -6,6 +6,7 @@
     logtree = log --graph --oneline --decorate --all
     fulltree = log --graph --decorate --all
     wipe = clean -dfx
+    swipe = "!f() { sudo git clean -dfx; }; f"
     co = checkout
     cm = commit
     cam = commit --amend

@@ -5,6 +5,32 @@
 
 export EDITOR=vim
 
+__parse_git_branch() {
+    BRANCH=$(git branch 2> /dev/null | sed -e '/^[^*]/d' -e 's/* \(.*\)/\1/')
+    REVLIST=$(git rev-list --count --left-right ${BRANCH}...origin/${BRANCH} 2> /dev/null|sed 's/\([0-9]\+\)\t\([0-9]\+\)/+\1-\2/g'|sed 's/+0-0//g')
+    #DIRTY=$([[ $(git diff --shortstat 2> /dev/null | tail -n1) != "" ]] && echo '*')
+    DIRTY=$( [[ -n "$(git status --porcelain 2>/dev/null | grep '^.M')" ]] && echo '*')
+    CACHED=$( [[ -n "$(git status --porcelain 2>/dev/null | grep '^M')" ]] && echo '^')
+    UNTRACKED=$( [[ -n "$(git status --porcelain 2>/dev/null | grep '^??')" ]] && echo '!')
+    if [ -n "$BRANCH" ]; then
+        if [ -n "$REVLIST" ]; then
+            GITSTAT="(${BRANCH}${REVLIST}${DIRTY}${CACHED}${UNTRACKED})"
+        else
+            GITSTAT="(origin/${BRANCH}${DIRTY}${CACHED}${UNTRACKED})"
+        fi
+    fi
+    echo " $GITSTAT"
+}
+
+__parse_hostname() {
+    HNAME=$(awk -F= '/PRETTY/ {print $2}' /etc/machine-info)
+    if [ -z "$HNAME" ]; then
+        hostname
+    else
+        echo $HNAME
+    fi
+}
+
 # Reset
 Color_Off='\033[0m'       # Text Reset
 # Regular Colors
@@ -139,7 +165,7 @@ function teleprompter() {
     local Prompt_On_IPurple='\[\033[0;105m\]'  # Purple
     local Prompt_On_ICyan='\[\033[0;106m\]'    # Cyan
     local Prompt_On_IWhite='\[\033[0;107m\]'   # White
-    PS1="${Prompt_BBlue}\D{%Y%m%d_%H%M} ${Prompt_BRed}\u${Prompt_BGreen}@\h${Prompt_BBlue} \w \$${Prompt_Color_Off} "
+    PS1="${Prompt_BBlue}\D{%Y%m%d_%H%M} ${Prompt_BRed}\u${Prompt_BGreen}@$(__parse_hostname)${Prompt_BBlue} \w${Prompt_IWhite}\$(__parse_git_branch) ${Prompt_BBlue}\$${Prompt_Color_Off} "
 }
 # Custom prompt
 teleprompter
@@ -297,6 +323,20 @@ function EOD-status() {
                 fi
             fi
         popd >/dev/null 2>/dev/null
+    done
+}
+
+function run() {
+    docker run -ti --rm $1 /bin/bash
+}
+
+function whatIvedone() {
+    SEARCH_PATH='.'
+    if [ -n '$1' ]; then
+        SEARCH_PATH=$1
+    fi
+    find $SEARCH_PATH -name .git|sed s/..git$//g|while read line; do
+        echo $line; git --no-pager -C $line log --author='Maciej Jablonski' --since yesterday
     done
 }
 
