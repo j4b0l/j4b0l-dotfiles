@@ -5,10 +5,16 @@
 
 export EDITOR=vim
 
+# current git repository status, to be displayed in command prompt
+# if the branch is in line with origin - shows origin/branch
+# if the branch diverged from origin shows branch+${local_commits_count}-${remote_commits_count}
+# for current git tree status additional characters are displayed:
+# * if trached files were modified but not committed or staged
+# ^ if there are changes staged for commit
+# ! if there are new, untrached files
 __parse_git_branch() {
     BRANCH=$(git branch 2> /dev/null | sed -e '/^[^*]/d' -e 's/* \(.*\)/\1/')
     REVLIST=$(git rev-list --count --left-right ${BRANCH}...origin/${BRANCH} 2> /dev/null|sed 's/\([0-9]\+\)\t\([0-9]\+\)/+\1-\2/g'|sed 's/+0-0//g')
-    #DIRTY=$([[ $(git diff --shortstat 2> /dev/null | tail -n1) != "" ]] && echo '*')
     DIRTY=$( [[ -n "$(git status --porcelain 2>/dev/null | grep '^.M')" ]] && echo '*')
     CACHED=$( [[ -n "$(git status --porcelain 2>/dev/null | grep '^M')" ]] && echo '^')
     UNTRACKED=$( [[ -n "$(git status --porcelain 2>/dev/null | grep '^??')" ]] && echo '!')
