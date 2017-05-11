@@ -11,7 +11,7 @@ export EDITOR=vim
 # for current git tree status additional characters are displayed:
 # * if trached files were modified but not committed or staged
 # ^ if there are changes staged for commit
-# ! if there are new, untrached files
+# ! if there are new, untracked files
 __parse_git_branch() {
     BRANCH=$(git branch 2> /dev/null | sed -e '/^[^*]/d' -e 's/* \(.*\)/\1/')
     REVLIST=$(git rev-list --count --left-right ${BRANCH}...origin/${BRANCH} 2> /dev/null|sed 's/\([0-9]\+\)\t\([0-9]\+\)/+\1-\2/g'|sed 's/+0-0//g')
@@ -20,14 +20,19 @@ __parse_git_branch() {
     UNTRACKED=$( [[ -n "$(git status --porcelain 2>/dev/null | grep '^??')" ]] && echo '!')
     if [ -n "$BRANCH" ]; then
         if [ -n "$REVLIST" ]; then
-            GITSTAT="(${BRANCH}${REVLIST}${DIRTY}${CACHED}${UNTRACKED})"
+            GITSTAT=" (${BRANCH}${REVLIST}${DIRTY}${CACHED}${UNTRACKED})"
         else
-            GITSTAT="(origin/${BRANCH}${DIRTY}${CACHED}${UNTRACKED})"
+            GITSTAT=" (origin/${BRANCH}${DIRTY}${CACHED}${UNTRACKED})"
         fi
     fi
-    echo " $GITSTAT"
+    echo "$GITSTAT"
 }
 
+# Quite a lot of companies require to have a histname compliant with global
+# hostname policy. I like my own personal touch though... This way I can have
+# both. It's the matter of setting 'pretty' hostname, if it's applicable to
+# your host you can have company-required hostname of INV-LAPTOP-123456-WHATEVA
+# and your own personal name displayed in prompt.
 __parse_hostname() {
     HNAME=$(awk -F= '/PRETTY/ {print $2}' /etc/machine-info)
     if [ -z "$HNAME" ]; then
@@ -346,6 +351,7 @@ function whatIvedone() {
     done
 }
 
+export LESS="-R"
 # For some company-confidential mumbo-jumbo
 if [ -f ~/.bash_aliases_private ]; then
     . ~/.bash_aliases_private
