@@ -338,7 +338,7 @@ function EOD-status() {
 }
 
 function run() {
-    docker run -ti --rm $1 /bin/bash
+    docker run -ti --rm --entrypoint=/bin/bash $1
 }
 
 function whatIvedone() {
@@ -352,6 +352,9 @@ function whatIvedone() {
 }
 
 export LESS="-R"
+alias msed='perl -0777 -pe'
+alias first="awk '{print \$1}'"
+
 # For some company-confidential mumbo-jumbo
 if [ -f ~/.bash_aliases_private ]; then
     . ~/.bash_aliases_private

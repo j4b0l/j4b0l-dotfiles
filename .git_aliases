@@ -1,5 +1,6 @@
 [alias]
     master = reset --hard origin/master
+    majonez = log --graph --oneline --decorate --all
     lgod = log --graph --oneline --decorate
     lgd = log --graph --decorate
     lg = log --graph
@@ -14,6 +15,7 @@
     origin = "!f() { git fetch; git reset --hard origin/$(git rev-parse --abbrev-ref HEAD); }; f"
     prp = "!f() { git pull --rebase; git push; }; f"
     fp = "!f() { git format-patch HEAD~$1; }; f"
+    permission-reset = !git diff -p -R --no-color | grep -E \"^(diff|(old|new) mode)\" --color=never | git apply
 
 [core]
     editor = vim
