@@ -29,5 +29,10 @@ augroup Java
     au BufNewFile *.java 0r ~/.vim/skel/skel.java | %s/CLASSNAME/\=expand("%:r")/ge
 augroup end
 
+autocmd BufWritePre *.py %s/\s\+$//e
+autocmd BufWritePre *.pl %s/\s\+$//e
 autocmd BufWritePre *.yaml %s/\s\+$//e
+autocmd BufWritePre *.sls %s/\s\+$//e
 autocmd BufWritePre *.properties %s/\s\+$//e
+autocmd BufWritePre *.sql %s/\s\+$//e
+autocmd BufWritePre *.cql %s/\s\+$//e
