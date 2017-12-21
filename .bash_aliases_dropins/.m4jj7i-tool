@@ -11,7 +11,7 @@ function j4-netcat() {
     shift
     cat < /dev/null > /dev/tcp/${host}/${port}
     if [ $? == 0 ]; then
-        echo "Connection to $host $port succesfull"
+        echo "Connection to $host $port successful"
     fi
 }
 
