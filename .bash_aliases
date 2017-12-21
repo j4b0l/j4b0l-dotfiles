@@ -355,6 +355,33 @@ export LESS="-R"
 alias msed='perl -0777 -pe'
 alias first="awk '{print \$1}'"
 
+function port() {
+    PORT=$1
+    shift
+    PROTO=$1
+    shift
+    TEMPFILE='/tmp/iana-port-numbers.txt'
+    REMOTE_URL='https://www.iana.org/assignments/service-names-port-numbers/service-names-port-numbers.txt'
+    if [ -z "$(find $TEMPFILE -mtime -90)" ]; then
+        echo "Warming up..."
+        wget -q -O $TEMPFILE $REMOTE_URL
+    fi
+    if [ -n "$PROTO" ]; then
+        cat $TEMPFILE|grep "\s$PORT\s"|grep "\s$PROTO\s"
+    else
+        cat $TEMPFILE|grep "\s$PORT\s"
+    fi
+
+}
+
+# For alias dropins
+DROPIN_DIR=$(readlink ~/.bash_aliases_dropins)
+if [ -d $DROPIN_DIR ]; then
+    while read dropin_file; do
+        . $dropin_file
+    done < <(find $DROPIN_DIR -type f)
+fi
+
 # For some company-confidential mumbo-jumbo
 if [ -f ~/.bash_aliases_private ]; then
     . ~/.bash_aliases_private

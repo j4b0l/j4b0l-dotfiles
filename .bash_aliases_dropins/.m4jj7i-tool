@@ -1,0 +1,18 @@
+# handy replacement for all the environments where you have no netcat
+# or telnet available, uses only most basic commands
+function j4-netcat() {
+    usage="${FUNCNAME} host port \nhost - address, IP or domain\nport - port number"
+    if [ -z "$1" -o -z "$2" ]; then
+        echo $USAGE
+    fi
+    host=$1
+    shift
+    port=$1
+    shift
+    cat < /dev/null > /dev/tcp/${host}/${port}
+    if [ $? == 0 ]; then
+        echo "Connection to $host $port succesfull"
+    fi
+}
+
+# vim: set filetype=sh:
