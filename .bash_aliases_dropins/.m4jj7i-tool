@@ -1,9 +1,24 @@
-# handy replacement for all the environments where you have no netcat
-# or telnet available, uses only most basic commands
+# Handy replacement for watch command. Before you ask - yes, I've found some
+# machines where watch is not present.
+function j4-watch() {
+    USAGE="${FUNCNAME} command [param [param [...]]]"
+    if [ -z "$1" ]; then
+        echo -e "$USAGE"
+        return 1
+    fi
+    while sleep 2; do
+        date
+        $@
+    done
+}
+
+# Handy replacement for all the environments where you have no netcat
+# or telnet available, uses only most basic commands.
 function j4-netcat() {
-    usage="${FUNCNAME} host port \nhost - address, IP or domain\nport - port number"
+    USAGE="${FUNCNAME} host port \nhost - address, IP or domain\nport - port number"
     if [ -z "$1" -o -z "$2" ]; then
-        echo $USAGE
+        echo -e "$USAGE"
+        return 1
     fi
     host=$1
     shift
