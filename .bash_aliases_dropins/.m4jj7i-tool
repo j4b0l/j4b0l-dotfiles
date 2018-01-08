@@ -30,4 +30,26 @@ function j4-netcat() {
     fi
 }
 
+# replacement for netstat, just goes through /proc filesystem, grabbing IDs
+# of filei descriptors of listening sockets and comparing them with net/tcp[6]
+# entries (going through full net/tcp gives ports system-wide)
+function j4-netstat() {
+    echo "proto pid port command"
+    if [ -n "$1" ] ; then
+        pidlist=$1
+    else
+        pidlist=$(ls /proc/|grep '^[0-9]\+$')
+    fi
+    #ls /proc/|grep '^[0-9]\+$'|while read procid; do
+    for procid in $pidlist; do
+        comm=$(cat /proc/$procid/comm)
+        ls -1 /proc/${procid}/fd/|while read fdid; do
+            socketfd=$(readlink /proc/${procid}/fd/${fdid}|grep '^socket'|sed 's/[^0-9]//g')
+            if [ -n "$socketfd" ]; then
+                cat /proc/${procid}/net/tcp|grep $socketfd|grep -o '[0-9a-fA-F]\{8\}:[0-9a-fA-F]\{4\}\s[0-9a-fA-F]\{8\}:[0-9a-fA-F]\{4\}\s0A'|cut -b10-13|while read hexport; do echo "tcp   $procid   $((0x$hexport)) $comm"; done
+                cat /proc/${procid}/net/tcp6|grep $socketfd|grep -o '[0-9a-fA-F]\{32\}:[0-9a-fA-F]\{4\}\s[0-9a-fA-F]\{32\}:[0-9a-fA-F]\{4\}\s0A'|cut -b34-37|while read hexport; do echo "tcp6  $procid   $((0x$hexport)) $comm"; done
+            fi
+        done
+    done
+}
 # vim: set filetype=sh:
