@@ -1,0 +1,13 @@
+#!/usr/bin/env perl
+
+while (<>) {
+    @hexes = split //;
+    @digits=();
+    while (scalar(@hexes)>1){
+        $octet = shift(@hexes);
+        $octet.= shift(@hexes);
+        unshift(@digits, hex($octet));
+    }
+    print (join ('.', @digits));
+}
+
