@@ -40,7 +40,6 @@ function j4-netstat() {
     else
         pidlist=$(ls /proc/|grep '^[0-9]\+$')
     fi
-    #ls /proc/|grep '^[0-9]\+$'|while read procid; do
     for procid in $pidlist; do
         comm=$(cat /proc/$procid/comm)
         ls -1 /proc/${procid}/fd/|while read fdid; do
