@@ -263,6 +263,13 @@ function j4-git-pullall() {
 	done
 }
 
+function git-all() {
+    find . -name .git| while read gitdir; do
+        echo -e "${Black}${On_White}Repository $(dirname $gitdir)${Color_Off}"
+        git -C $(dirname $gitdir) $@
+    done
+}
+
 function j4-docker-watch() {
 	if [ -z "$1" ]; then
 		WIDTH=210
