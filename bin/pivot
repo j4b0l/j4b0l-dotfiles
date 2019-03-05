@@ -1,0 +1,12 @@
+#!/usr/bin/env perl
+
+while (<>) {
+    @characters = split //;
+    @output=();
+    while (scalar(@characters)>0){
+        push (@output, shift(@characters)) if scalar(@characters)%2==1 or unshift (@output, (shift @characters));
+    }
+    print @output;
+}
+
+
