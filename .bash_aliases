@@ -207,11 +207,11 @@ function omg-done() {
 
 # See list of people responsible for the code in repository
 function who-did-that() {
-    git ls-tree -r -z --name-only HEAD -- . | xargs -0 -n1 git blame --line-porcelain HEAD |grep  "^author "|sort|uniq -c|sort -nr
+    git ls-tree -r -z --name-only HEAD -- . | xargs -0 -n1 git blame --line-porcelain HEAD |grep -a  "^author "|sort|uniq -c|sort -nr
 }
 
 function who-worked-on-that() {
-    git ls-tree -r -z --name-only HEAD -- . | xargs -0 -n1 git blame --line-porcelain HEAD |grep  "^author "|sort|uniq -c|sort -nr|while read line; do
+    git ls-tree -r -z --name-only HEAD -- . | xargs -0 -n1 git blame --line-porcelain HEAD |grep -a  "^author "|sort|uniq -c|sort -nr|while read line; do
         author=`echo $line | awk -F' author ' '{print $2}'`
         count=`echo $line | awk -F' author ' '{print $1}'`
         stats=`git log --author="$author" --pretty=tformat: --numstat | gawk '{ add += $1; subs += $2; loc += $1 - $2 } END { printf "%s = +%s -%s\n", loc, add, subs }' -`
@@ -361,6 +361,7 @@ function whatIvedone() {
 export LESS="-R"
 alias msed='perl -0777 -pe'
 alias first="awk '{print \$1}'"
+alias tea="tee $(date +%s)_execution.log"
 
 function port() {
     PORT=$1
@@ -379,6 +380,10 @@ function port() {
         cat $TEMPFILE|grep "\s$PORT\s"
     fi
 
+}
+
+function youreit() {
+    export PS1="$1 $PS1"
 }
 
 # For alias dropins

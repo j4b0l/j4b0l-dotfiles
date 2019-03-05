@@ -36,3 +36,11 @@ autocmd BufWritePre *.sls %s/\s\+$//e
 autocmd BufWritePre *.properties %s/\s\+$//e
 autocmd BufWritePre *.sql %s/\s\+$//e
 autocmd BufWritePre *.cql %s/\s\+$//e
+set viminfo+=<256
+
+nnoremap <F9> :!%:p<Enter>
+let mapleader = "-"
+nnoremap <leader>r :!%:p
+
+au BufRead,BufNewFile *.md setlocal textwidth=80
+

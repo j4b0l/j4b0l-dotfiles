@@ -8,6 +8,7 @@
     fulltree = log --graph --decorate --all
     wipe = clean -dfx
     swipe = "!f() { sudo git clean -dfx; }; f"
+    fix = checkout -
     co = checkout
     cm = commit
     cam = commit --amend
