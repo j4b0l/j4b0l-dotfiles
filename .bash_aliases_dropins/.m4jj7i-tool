@@ -53,6 +53,8 @@ function j4-netstat() {
 }
 
 # simple replacement for curl using bash builtin device /dev/tcp/*/*
+# after a moment of reflection I realized that it will horribly fail in
+# case of https, but what the hell...
 function j4-curl() {
 
     FULLURL=$1
