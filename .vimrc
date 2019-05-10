@@ -36,6 +36,8 @@ autocmd BufWritePre *.sls %s/\s\+$//e
 autocmd BufWritePre *.properties %s/\s\+$//e
 autocmd BufWritePre *.sql %s/\s\+$//e
 autocmd BufWritePre *.cql %s/\s\+$//e
+autocmd BufWritePre *Jenkinsfile* %s/\s\+$//e
+autocmd BufWritePre *.gradle %s/\s\+$//e
 set viminfo+=<256
 
 nnoremap <F9> :!%:p<Enter>

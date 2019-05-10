@@ -17,6 +17,19 @@
     prp = "!f() { git pull --rebase; git push; }; f"
     fp = "!f() { git format-patch HEAD~$1; }; f"
     permission-reset = !git diff -p -R --no-color | grep -E \"^(diff|(old|new) mode)\" --color=never | git apply
+# git commands to step by one commit forth (step) and back (back)
+    back = "!f() { git clean -df; git reset --hard HEAD^; }; f"
+    step = "!f() { BRANCH=$(git rev-parse --abbrev-ref HEAD); COMMIT=$(git rev-list $BRANCH..origin/$BRANCH|tail -1); git clean -df; git reset --hard $COMMIT; }; f"
+# git commands to step by one number over specified tag with number in name
+# if you create number of tags with section label and integer number (zero-indexed)
+# these commands will take a parameter as label name and move forth (next) and back (next) by one number
+# e.g. for commits tagged as section0, section1, section2 ... section20 it will run between 0 and 20 if you run:
+# git next section
+# or
+# git prev section
+# if used out of tags range it SHOULD move to tagged area
+    prev = "!f() { LABEL=$1; NUMBER=$(git describe --tags --abbrev=0|grep $1|sed s/$1//g); if [ -z "$NUMBER" ]; then git clean -df; git reset --hard ${LABEL}0; else git clean -df; git reset --hard ${LABEL}$((NUMBER-1)); fi }; f"
+    next = "!f() { LABEL=$1; NUMBER=$(git describe --tags --abbrev=0|grep $1|sed s/$1//g); if [ -z "$NUMBER" ]; then git clean -df; git reset --hard ${LABEL}0; else git clean -df; git reset --hard ${LABEL}$((NUMBER+1)); fi }; f"
 
 [core]
     editor = vim
