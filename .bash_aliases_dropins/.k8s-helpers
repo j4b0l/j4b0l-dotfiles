@@ -1,0 +1,28 @@
+# A kubernetes context choice tool, if you have dialog installed, it will display available contexts, if not it will give you commands to execute
+function kcontext() {
+    USAGE="${FUNCNAME} \nrequires: kubectl\noptionally: dialog"
+    KCTL=$(which kubectl 2>/dev/null)
+    DIALOG=$(which dialog 2>/dev/null)
+    if [ -z "${KCTL}" ]; then
+        echo $USAGE
+        return 1
+    fi
+    CONTEXTS=$(${KCTL} config get-contexts -o name)
+    if [ -z "${DIALOG}" ]; then
+        echo "Use one of following commands:"
+        for ctx in $CONTEXTS; do
+            echo "kubectl config use-context ${ctx}"
+        done
+    else
+        OPTIONS=""
+        for ctx in $CONTEXTS; do
+            OPTIONS="$OPTIONS $ctx $ctx"
+        done
+        CHOICE=$(${DIALOG} --clear --title "Pick a kubernetes context" --menu "Available contexts:" 15 40 10 $OPTIONS 2>&1 >/dev/tty)
+        clear
+        $KCTL config use-context $CHOICE
+    fi
+}
+
+
+# vim: set filetype=sh:

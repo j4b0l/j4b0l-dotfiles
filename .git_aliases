@@ -6,14 +6,16 @@
     lg = log --graph
     logtree = log --graph --oneline --decorate --all
     fulltree = log --graph --decorate --all
-    wipe = clean -dfx
-    swipe = "!f() { sudo git clean -dfx; }; f"
+    wipe = clean -df
+    swipe = "!f() { sudo git clean -dfx -e .idea -e *.iml; }; f"
     fix = checkout -
     co = checkout
     cm = commit
     cam = commit --amend
     whereis = "!f() { git ls-tree --full-tree -r HEAD |grep $(git ls-tree HEAD -- $1|awk '{print $3}'); }; f"
     origin = "!f() { git fetch; git reset --hard origin/$(git rev-parse --abbrev-ref HEAD); }; f"
+    remaster = "!f() { git fetch; git rebase origin/master; }; f"
+    redevelop = "!f() { git fetch; git rebase origin/develop; }; f"
     prp = "!f() { git pull --rebase; git push; }; f"
     fp = "!f() { git format-patch HEAD~$1; }; f"
     permission-reset = !git diff -p -R --no-color | grep -E \"^(diff|(old|new) mode)\" --color=never | git apply
@@ -30,6 +32,7 @@
 # if used out of tags range it SHOULD move to tagged area
     prev = "!f() { LABEL=$1; NUMBER=$(git describe --tags --abbrev=0|grep $1|sed s/$1//g); if [ -z "$NUMBER" ]; then git clean -df; git reset --hard ${LABEL}0; else git clean -df; git reset --hard ${LABEL}$((NUMBER-1)); fi }; f"
     next = "!f() { LABEL=$1; NUMBER=$(git describe --tags --abbrev=0|grep $1|sed s/$1//g); if [ -z "$NUMBER" ]; then git clean -df; git reset --hard ${LABEL}0; else git clean -df; git reset --hard ${LABEL}$((NUMBER+1)); fi }; f"
+    dupes = "!f() { git -C $(git rev-parse --show-toplevel) ls-tree -r HEAD | cut -c 13- | sort | uniq -D -w 40; }; f"
 
 [core]
     editor = vim
