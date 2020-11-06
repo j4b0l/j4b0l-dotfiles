@@ -29,5 +29,15 @@ function kcontext() {
     fi
 }
 
-
+function k-ns-grab-logs() {
+    USAGE="${FUNCNAME} namespace"
+    if [ -z "$1" ]; then
+        echo $USAGE
+        return 1
+    fi
+    NAMESPACE=$1
+    kubectl get pod -n $NAMESPACE -o name|sed 's/pod\///g'|while read podname; do
+        kubectl logs -n $NAMESPACE ${podname} >  ${podname}.log
+    done
+}
 # vim: set filetype=sh:
