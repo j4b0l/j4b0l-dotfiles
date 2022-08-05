@@ -1,0 +1,154 @@
+export EDITOR=vim
+if [ -f ~/.anysh_aliases ]; then
+    J4_REAL_ALIASES=`readlink -f ~/.anysh_aliases`
+    J4_DOTFILES_ROOT=`dirname $J4_REAL_ALIASES`
+    J4_BINPATH="${J4_DOTFILES_ROOT}/bin"
+    if [ -d $J4_BINPATH ]; then
+        export PATH="${J4_BINPATH}:${PATH}"
+    fi
+fi
+
+if [ -d ~/bin ]; then
+    export PATH="~/bin:${PATH}"
+fi
+
+# To overcome some common mistakes and terminal pitfalls
+alias sl="ls"
+alias mc='mc -s'
+alias grpe='grep'
+alias lelss='less'
+
+# Stage all of modified files in git
+# use when you think 'OMG, it's finally done and I can commit it'
+function omg-done() {
+    local GIT_TOP=$(git rev-parse --show-toplevel|sed 's/\//\\\//g')
+	git diff --name-only|sed "s/^/${GIT_TOP}\//g"|xargs git add
+}
+
+# See list of people responsible for the code in repository
+function who-did-that() {
+    git ls-tree -r -z --name-only HEAD -- . | xargs -0 -n1 git blame --line-porcelain HEAD |grep -a  "^author "|sort|uniq -c|sort -nr
+}
+
+function who-worked-on-that() {
+    git ls-tree -r -z --name-only HEAD -- . | xargs -0 -n1 git blame --line-porcelain HEAD |grep -a  "^author "|sort|uniq -c|sort -nr|while read line; do
+        author=`echo $line | awk -F' author ' '{print $2}'`
+        count=`echo $line | awk -F' author ' '{print $1}'`
+        stats=`git log --author="$author" $@ --pretty=tformat: --numstat | gawk '{ add += $1; subs += $2; loc += $1 - $2 } END { printf "%s = +%s -%s\n", loc, add, subs }' -`
+        echo -e "$author\t$stats"
+    done
+}
+
+# DOGE GIT - just for fun ;)
+# usage - just have fun like
+# much commit
+# so push
+# wow
+alias much='git'
+alias so='git'
+alias such='git'
+alias very='git'
+alias wow='git status'
+
+# repeat last command with sudo
+alias orly='sudo $(history -p \!\!)'
+alias doco='docker-compose'
+
+function j4-find() {
+	if [ -z "$1" ]; then
+		return
+	else
+		if [ -z "$2" ]; then
+			find . -name "*$1*"
+		else
+			find $2 -name "*$1*"
+		fi
+	fi
+}
+
+function j4-git-lasttag() {
+	git describe --abbrev=0 --tags HEAD
+}
+
+function j4-git-pullall() {
+	if [ -z "$1" ]; then
+		GITDIR=${HOME}/git
+	else
+		GITDIR=$1
+	fi
+	find ${GITDIR} -maxdepth 2 -type d -name .git|sed 's/\.git//g'|while read repo; do
+		pushd $repo
+		git pull --rebase
+		popd
+	done
+}
+
+function git-all() {
+    find . -name .git| while read gitdir; do
+        echo -e "${Black}${On_White}Repository $(dirname $gitdir)${Color_Off}"
+        git -C $(dirname $gitdir) $@
+    done
+}
+
+function j4-docker-watch() {
+	if [ -z "$1" ]; then
+		WIDTH=210
+	else
+		WIDTH=$1
+	fi
+	watch "docker ps -a|cut -b -${WIDTH}"
+}
+
+function mkdir-dated() {
+    DATE=`date +%Y%m%d`
+    if [ -n "$1" ]; then
+        mkdir ${DATE}_$1
+        cd ${DATE}_$1
+    else
+        mkdir ${DATE}
+        cd ${DATE}
+    fi
+}
+
+function mknotes-dated() {
+    DATE=`date +%Y%m%d`
+    if [ -n "$1" ]; then
+        vim ${DATE}_$1.txt
+    else
+        vim ${DATE}.txt
+    fi
+}
+
+function journal-dated() {
+    DATE=`date +%Y%m%d`
+    if [ -n "$1" ]; then
+        TARGET=${DATE}_$1.txt
+    else
+        TARGET=${DATE}.txt
+    fi
+    if [ -f "00000000.txt" -a ! -f $TARGET ]; then
+        cp 00000000.txt $TARGET
+    fi
+    vim $TARGET
+}
+
+function j4-realias() {
+    . ~/.bash_aliases
+}
+
+function whatIvedone() {
+    SEARCH_PATH='.'
+    if [ -n '$1' ]; then
+        SEARCH_PATH=$1
+    fi
+    find $SEARCH_PATH -name .git|sed s/..git$//g|while read line; do
+        echo $line; git --no-pager -C $line log --author='Maciej Jablonski' --since yesterday
+    done
+}
+
+export LESS="-R"
+alias msed='perl -0777 -pe'
+alias first="awk '{print \$1}'"
+alias tea="tee $(date +%s)_execution.log"
+
+# vim: set filetype=sh:
